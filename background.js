@@ -5,14 +5,17 @@ let dateString = date.toDateString();
 let activeUrl = null;
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === "complete" && tabId === activeTabId) {
-        const newUrl = new URL(tab.url).hostname;
-        if (newUrl !== activeUrl) {
-            if (activeUrl) {
-                calcTimeInterval();
+    if (changeInfo.status === "complete" && tabId === activeTabId && tab.url) {
+        try {
+            const newUrl = new URL(tab.url).hostname;
+            if (newUrl !== activeUrl) {
+                if (activeUrl) {
+                    calcTimeInterval();
+                }
+                activeUrl = newUrl;
+                startTime = Date.now();
             }
-            activeUrl = newUrl;
-            startTime = Date.now();
+        } catch (error) {
         }
     }
 });
@@ -23,8 +26,13 @@ chrome.tabs.onActivated.addListener(activeInfo => {
     }
     activeTabId = activeInfo.tabId;
     chrome.tabs.get(activeTabId, tab => {
-        activeUrl = new URL(tab.url).hostname;
-        startTime = Date.now();
+        if (tab.url && tab.url != "chrome://newtab/") {
+            try {
+                activeUrl = new URL(tab.url).hostname;
+                startTime = Date.now();
+            } catch (error) {
+            }
+        }
     });
 });
 
@@ -37,11 +45,17 @@ chrome.windows.onFocusChanged.addListener(windowId => {
         activeUrl = null;
         startTime = null;
     } else {
-        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
             if (tabs.length > 0) {
                 activeTabId = tabs[0].id;
-                activeUrl = new URL(tabs[0].url).hostname;
-                startTime = Date.now();
+                if (tabs[0].url) {
+                    try {
+                        activeUrl = new URL(tabs[0].url).hostname;
+                        startTime = Date.now();
+                    } catch (error) {
+                        console.error("Invalid URL:", tabs[0].url);
+                    }
+                }
             }
         });
     }
@@ -79,5 +93,3 @@ chrome.runtime.onStartup.addListener(() => {
     date = new Date();
     dateString = date.toDateString();
 });
-
-

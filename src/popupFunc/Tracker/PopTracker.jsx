@@ -60,13 +60,13 @@ const TrackerDisplay = () => {
           </thead>
           <tbody>
             {Object.entries(currentinfo).length > 0 ? (
-              Object.entries(currentinfo).map(([url, time]) => (
+              Object.entries(currentinfo).map(([url, time]) => {if(url!="null"){return(
                 <tr key={`${currentDate}-${url}`}>
                   <td>{currentDate}</td>
                   <td>{url}</td>
                   <td>{(time / 60000).toFixed(2)}</td>
                 </tr>
-              ))
+              )}})
             ) : (
               <tr>
                 <td colSpan="3">No data present</td>

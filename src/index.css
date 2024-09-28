@@ -23,6 +23,23 @@ form{
 
 .tracker-container{
     display: flex;
-    height:70vh;
+    height:30vh;
     overflow-y: hidden;
 }
+
+.ProseMirror {
+    border: solid black 1px;
+}
+
+.draggable-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.drag{
+    height: 5vh;
+    cursor: move;
+    background-color: rgb(185, 249, 249);
+}
+
+

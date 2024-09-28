@@ -1,5 +1,5 @@
 import React from "react";
-import PopTracker from "../../popupFunc/PopTracker"
+import PopTracker from "../../popupFunc/Tracker/PopTracker"
 function Tracker(){
         
     return (
