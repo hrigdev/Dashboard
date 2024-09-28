@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "DashBoard",
+  "version": "1.0.0",
+  "description": "Everything I need as an extension",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "history",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
