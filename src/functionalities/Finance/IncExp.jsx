@@ -107,14 +107,14 @@ function IncExp() {
         <button type="submit">Add/Subs</button>
       </form>
 
-      <ul>
+      {/* <ul>
         {entries.map((entry) => (
           <li key={entry.id}>
             {entry.date} - {entry.amount} ({entry.status})
             <button onClick={()=>deleteEntry(entry.id)}>delete</button>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </>
   );
 }

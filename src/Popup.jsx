@@ -1,6 +1,6 @@
 import React from "react";
 import PopTracker from "./popupFunc/Tracker/PopTracker";
-import StickyNotes from "./popupFunc/StickyNotes/StickyNotes";
+import StickyNotes from "./StickyNotes";
 
 function Popup(){
     return(

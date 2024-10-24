@@ -48,6 +48,7 @@ function Notes(props) {
   }, [content]);
 
   return (
+    <> 
     <div className="notesSection">
       <button onClick={createNewEntry}>New</button>
       <div className="notes-listSection">
@@ -68,6 +69,7 @@ function Notes(props) {
         />
       </div>
     </div>
+    </>
   );
 }
 

@@ -33,7 +33,7 @@ function To_do(props) {
   }, [entries]);
 
   return (
-    <>
+    <> 
       <form onSubmit={submitEntry}>
         <input type="text" onChange={submitValue} value={value}></input>
         <button>Tick</button>

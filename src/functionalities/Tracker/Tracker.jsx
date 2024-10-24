@@ -3,7 +3,8 @@ import PopTracker from "../../popupFunc/Tracker/PopTracker"
 function Tracker(){
         
     return (
-        <>
+        <> 
+
             <PopTracker />
         </>
     )

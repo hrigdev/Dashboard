@@ -22,7 +22,10 @@ ChartJS.register(
 function Chart({ info = {} }) { 
   const siteEntries = Object.entries(info);
   
-  const labels = siteEntries.map(([site]) => site);
+  // Sort entries by time spent and take the top 5
+  const topEntries = siteEntries.sort((a, b) => b[1] - a[1]).slice(0, 5);
+  
+  const labels = topEntries.map(([site]) => site);
 
   const generateColor = (index) => {
     const baseColor = 100; 
@@ -32,34 +35,50 @@ function Chart({ info = {} }) {
     return `rgba(${r}, ${g}, ${b}, 0.5)`; // Increased opacity for better visibility
   };
 
-  const dataValues = siteEntries.map(([, time]) => time / (60000 * 60)); // Convert time to hours
+  const dataValues = topEntries.map(([, time]) => time / (60000 * 60)); // Convert time to hours
 
   const data = {
     labels,
     datasets: [{
       label: 'Time Spent (hours)', // Use a single dataset for better alignment
       data: dataValues,
-      borderColor: labels.map((_, index) => generateColor(index)), // Generate colors for each bar
-      backgroundColor: labels.map((_, index) => generateColor(index)), // Same as borderColor
-      barThickness: 15,
+      // borderColor: labels.map((_, index) => generateColor(index)), // Generate colors for each bar
+      // backgroundColor: labels.map((_, index) => generateColor(index)), // Same as borderColor
+      borderColor: '#D9D9D9',
+      backgroundColor:'#D9D9D9',
+      barThickness: 90, // Increased bar thickness
     }],
   };
 
   const options = {
-    indexAxis: 'y',
+    indexAxis: 'x',
     elements: {
       bar: {
         borderWidth: 1,
       },
     },
     responsive: true,
+    // scales: {
+    //   x: {
+    //     max: 24,
+    //   },
+    //   y: {
+    //     beginAtZero: true,
+    //     stacked: false,
+    //   },
+    // },
     scales: {
       x: {
-        max: 24,
+        display: false,
+        grid: {
+          display: false,
+        },
       },
       y: {
-        beginAtZero: true,
-        stacked: false,
+        display: true,
+        grid: {
+          display: false,
+        },
       },
     },
     plugins: {
@@ -68,11 +87,11 @@ function Chart({ info = {} }) {
       },
       title: {
         display: true,
-        text: 'Web Usage Chart',
+        // text: 'Web Usage Chart',
       },
     },
-    barPercentage: 0.5, // Reduces the width of the bars
-    categoryPercentage: 0.8, // Reduces the space each category takes up
+    barPercentage: 0.8, // Increased to make bars take up more space
+    categoryPercentage: 0.9, // Increased to make bars take up more space
   };
   
   return (

@@ -21,5 +21,10 @@
   },
   "chrome_url_overrides": {
     "newtab": "index.html"
-  }
+  },
+  "content_scripts":[{
+    "matches":["<all_urls>"],
+    "js": ["content.js"]
+}]
+
 }

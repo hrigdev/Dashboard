@@ -9,11 +9,16 @@ const TrackerDisplay = () => {
     const fetchInfoData = () => {
       chrome.storage.local.get(["info"], (data) => {
         if (data.info) {
-          setInfo(data.info);
-
-          const firstKey = Object.keys(data.info)[0];
-          if (firstKey) {
-            setCurrentDate(firstKey);
+          const sortedInfo = Object.keys(data.info)
+            .sort((a, b) => new Date(a) - new Date(b)) 
+            .reduce((acc, key) => {
+              acc[key] = data.info[key];
+              return acc;
+            }, {});
+          setInfo(sortedInfo);
+          const latestDate = Object.keys(sortedInfo).slice(-1)[0];
+          if (latestDate) {
+            setCurrentDate(latestDate);
           }
         }
       });
@@ -23,34 +28,41 @@ const TrackerDisplay = () => {
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === "local" && changes.info) {
-        setInfo(changes.info.newValue);
+        const sortedNewInfo = Object.keys(changes.info.newValue)
+          .sort((a, b) => new Date(a) - new Date(b))
+          .reduce((acc, key) => {
+            acc[key] = changes.info.newValue[key];
+            return acc;
+          }, {});
+        setInfo(sortedNewInfo);
       }
     });
   }, []);
 
   function incDate() {
-    let date = currentDate;
-    let newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + 1);
-    newDate = newDate.toDateString();
-    setCurrentDate(newDate);
+    const dates = Object.keys(info);
+    const currentIndex = dates.indexOf(currentDate);
+    if (currentIndex < dates.length - 1) {
+      setCurrentDate(dates[currentIndex + 1]);
+    }
   }
 
   function decDate() {
-    let date = currentDate;
-    let newDate = new Date(date);
-    newDate.setDate(newDate.getDate() - 1);
-    newDate = newDate.toDateString();
-    setCurrentDate(newDate);
+    const dates = Object.keys(info);
+    const currentIndex = dates.indexOf(currentDate);
+    if (currentIndex > 0) {
+      setCurrentDate(dates[currentIndex - 1]);
+    }
   }
 
-  let currentinfo = info[currentDate] || {};
+  let currentInfo = info[currentDate] || {};
+
+
 
   return (
     <div>
-      <h1>Web Usage Tracker</h1>
       <div className="tracker-container">
-        <table>
+        {/* <table>
           <thead>
             <tr>
               <th>Date</th>
@@ -59,27 +71,36 @@ const TrackerDisplay = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.entries(currentinfo).length > 0 ? (
-              Object.entries(currentinfo).map(([url, time]) => {if(url!="null"){return(
-                <tr key={`${currentDate}-${url}`}>
-                  <td>{currentDate}</td>
-                  <td>{url}</td>
-                  <td>{(time / 60000).toFixed(2)}</td>
-                </tr>
-              )}})
+            {Object.entries(currentInfo).length > 0 ? (
+              Object.entries(currentInfo).map(([url, time]) => {
+                if (url !== "null") {
+                  return (
+                    <tr key={`${currentDate}-${url}`}>
+                      <td>{currentDate}</td>
+                      <td>{url}</td>
+                      <td>{(time / 60000).toFixed(2)}</td>
+                    </tr>
+                  );
+                }
+              })
             ) : (
               <tr>
                 <td colSpan="3">No data present</td>
               </tr>
             )}
           </tbody>
-        </table>
-        <button onClick={decDate}>left</button>
-        <button onClick={incDate} disabled={currentDate === Object.keys(info)[0]}>
-          right
+        </table> */}
+        <button onClick={decDate} disabled={currentDate === Object.keys(info)[0]}>
+          Left
+        </button>
+        <button
+          onClick={incDate}
+          disabled={currentDate === Object.keys(info)[Object.keys(info).length - 1]}
+        >
+          Right
         </button>
         <div className="chart-container">
-          <Chart info={info[currentDate]} /> 
+          <Chart info={info[currentDate]} />
         </div>
       </div>
     </div>
