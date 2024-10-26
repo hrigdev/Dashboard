@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Chart from "./Chart";
-
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 const TrackerDisplay = () => {
   const [info, setInfo] = useState({});
   const [currentDate, setCurrentDate] = useState("");
@@ -90,17 +91,19 @@ const TrackerDisplay = () => {
             )}
           </tbody>
         </table> */}
-        <button onClick={decDate} disabled={currentDate === Object.keys(info)[0]}>
-          Left
+        <div className="chart-container">
+          <Chart info={info[currentDate]} />
+        </div>
+        <div className="button-wrapper">
+        <button className="chart-button" onClick={decDate} disabled={currentDate === Object.keys(info)[0]}>
+          <ChevronLeftIcon />
         </button>
-        <button
+        <button className="chart-button"
           onClick={incDate}
           disabled={currentDate === Object.keys(info)[Object.keys(info).length - 1]}
         >
-          Right
+          <ChevronRightIcon />
         </button>
-        <div className="chart-container">
-          <Chart info={info[currentDate]} />
         </div>
       </div>
     </div>

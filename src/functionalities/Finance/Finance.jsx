@@ -1,10 +1,10 @@
 import React from "react";
 import IncExp from "./IncExp";
 
-function Finance() {
+function Finance(props) {
     return(
        <> 
-        <IncExp />
+        <IncExp  onFinalAmountUpdate={props.onFinalAmountUpdate} />
          </>
     )
 }

@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@faker-js/faker": "^9.0.0",
+    "@mui/icons-material": "^6.1.5",
+    "@mui/material": "^6.1.5",
     "@tiptap/core": "^2.9.1",
     "@tiptap/extension-color": "^2.9.1",
     "@tiptap/extension-list-item": "^2.9.1",
@@ -19,6 +23,7 @@
     "@tiptap/react": "^2.6.6",
     "@tiptap/starter-kit": "^2.9.1",
     "chart.js": "^4.4.4",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "chrome-types": "^0.1.306",
     "faker": "^6.6.6",
     "react": "^18.3.1",

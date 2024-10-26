@@ -8,7 +8,7 @@ function List(props){
     }
 
     return(
-        <div>
+        <div className="todo-entry">
             {props.content_value} 
             <button onClick={child_delete}>Delete</button>
         </div>

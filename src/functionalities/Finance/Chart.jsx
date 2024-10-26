@@ -100,7 +100,7 @@ function Chart({ entries = [] }) {  // Add default empty array
   };
 
   return (
-    <div style={{ height: '180px', width:'600px', position:'relative', top:"5px" }}>
+    <div className="finance-chart-container" style={{ height: 'auto', width:'auto', position:'relative', top:"5px"}}>
       <Line options={options} data={data} />
     </div>
   );

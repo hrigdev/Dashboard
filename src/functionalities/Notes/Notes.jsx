@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Notes_input from "./Components/Notes_input";
 import Notes_list from "./Components/Notes_list";
+import AddIcon from "@mui/icons-material/Add";
 
 function Notes(props) {
   const [entries, setEntries] = useState([]);
@@ -9,6 +10,18 @@ function Notes(props) {
     id: null,
     content: "",
   });
+
+  const [mouseMovement, setMouseMovement] = useState(false);
+
+  const [input, setInput] = useState(false);
+
+  function mouseEnter() {
+    setMouseMovement(true);
+  }
+
+  function mouseLeave() {
+    setMouseMovement(false);
+  }
 
   function searcher(id) {
     const found = entries.find((entry) => entry.id === id);
@@ -32,6 +45,8 @@ function Notes(props) {
       id: null,
       content: "",
     });
+
+    setInput(true);
   }
 
   useEffect(() => {
@@ -48,27 +63,49 @@ function Notes(props) {
   }, [content]);
 
   return (
-    <> 
-    <div className="notesSection">
-      <button onClick={createNewEntry}>New</button>
-      <div className="notes-listSection">
-        <Notes_list
-          entries={entries}
-          searcher={searcher}
-          deleteEntry={deleteEntry}
-        />
+    <>
+      <div className="notesSection">
+        <div className="notes-listSection">
+          <Notes_list
+            entries={entries}
+            searcher={searcher}
+            deleteEntry={deleteEntry}
+          />
+        </div>
+        {input == true ? (
+          <div className="notes-entrySection">
+            <button className="notes-button" onClick={createNewEntry}>
+              <AddIcon />
+            </button>
+            <Notes_input
+              value={content.content}
+              entries={entries}
+              content={content}
+              setEntries={setEntries}
+              searcher={searcher}
+              setContent={setContent}
+            />
+          </div>
+        ) : entries.length > 0 ? (
+          <div>show the latest entry</div>
+        ) : (
+          <div
+            className="note-message"
+            onMouseOver={mouseEnter}
+            onMouseOut={mouseLeave}
+          >
+            {mouseMovement ? (
+              <button className="notes-button add" onClick={createNewEntry}>
+                <div>
+                <AddIcon />
+                </div>
+              </button>
+            ) : (
+              <>NO RECENT ENTRY</>
+            )}
+          </div>
+        )}
       </div>
-      <div className="notes-entrySection">
-        <Notes_input
-          value={content.content}
-          entries={entries}
-          content={content}
-          setEntries={setEntries}
-          searcher={searcher}
-          setContent={setContent}
-        />
-      </div>
-    </div>
     </>
   );
 }

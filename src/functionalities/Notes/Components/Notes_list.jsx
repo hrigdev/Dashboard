@@ -6,7 +6,7 @@ function Notes_list({ entries, searcher, deleteEntry }) {
 
     return (
         <nav className="navbar">
-            {entries.length > 0 ? (
+            {/* {entries.length > 0 ? (
                 entries.map((entry) => (
                     <div key={entry.id}>
                         <button onClick={() => searcher(entry.id)}>
@@ -17,7 +17,7 @@ function Notes_list({ entries, searcher, deleteEntry }) {
                 ))
             ) : (
                 <p>No entries available</p>
-            )}
+            )} */}
         </nav>
     );
 }

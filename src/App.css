@@ -35,7 +35,9 @@ body{
     flex-direction: column;
     background-color: black;
     border-radius: 40px;
-    color:white
+    color:white;
+    padding: 30px 10px;
+    gap:20px;
 }
 .header{
     font-weight: bold;
@@ -54,14 +56,14 @@ body{
 
 .fn-container{
     display: grid;
-    gap: 7px;
+    gap: 11px;
     border-radius: 40px;
     padding:15px;
     padding-top:7px;
 
   
-    grid-template-columns: 1fr 1fr 1.2fr;  /* Divide columns evenly */
-    grid-template-rows: 270px auto;       /* Adjust rows automatically */
+    grid-template-columns: 1fr .6fr 1.3fr;  /* Divide columns evenly */
+    grid-template-rows: 280px auto;       /* Adjust rows automatically */
 }
 
 .container{
@@ -132,11 +134,225 @@ body{
 
 .subheader{
     padding-left:3px;
+    font-size: 15px;
+
 }
 
 .finance{
-    gap:40px;
+    gap:20px;
+    display: flex;
+}
+
+
+.amount{
+    font-size: 50px;
+}
+
+
+.chart-button {
+    border-radius: 100%;
+    border: transparent;
+    background-color: #80808050;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.chart-button:hover {
+    transform: scale(1.05); /* Smaller scale for a gentler effect */
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2); /* Lighter shadow */
+    background-color: #80808070; /* Slightly darker but subtle */
+}
+
+.MuiSvgIcon-root{
+    color:white;
+}
+
+button{
+    cursor: pointer;
+}
+
+.chart-container{
+    position: relative;
+}
+
+.tracker-container{
+    position: relative;
+}
+
+.button-wrapper {
+    position: absolute;
+    bottom: 0px; 
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    background-color: rgba(0, 0, 0,0.6); 
+    padding: 5px 10px;
+    border-radius: 20px;
+    left:40%;
+}
+
+.chart-button {
+    border-radius: 50%;
+    border: transparent;
+    background-color: #80808050;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.chart-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+    background-color: #80808070;
+}
+
+.button-container .MuiSvgIcon-root{
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+}
+
+.button-container .MuiSvgIcon-root:hover{
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+
 }
 
 
 
+.notes{
+    gap:10px
+}
+
+
+.finance-chart-container{
+    display: flex;
+    padding:30px;
+
+}
+
+.finance>.fn{
+    flex-grow: 1;
+}
+
+
+.notesSection{
+    flex-grow: 1;
+    position: relative;
+}
+
+.note-message {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    width: 100%;
+    height: 90%;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.note-message:hover {
+    background-color: rgba(200, 200, 200, 0.2); /* Shiny gray on hover */
+    color: rgba(70, 70, 70, 0.8);
+}
+
+.notes-button.add {
+    border: none;
+    background-color: transparent;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    position: absolute;
+    height:100%;
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notes-button.add {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.notes-button:hover {
+    transform: scale(1.05);
+}
+
+.notes-button .MuiSvgIcon-root {
+    color: rgb(70, 70, 70);
+    font-size: 40px;
+}
+
+
+
+.fn-todo{
+    display: flex;
+    height:100%;
+    width: 100%;
+    flex-direction: row;
+
+    font-size: 20px;
+}
+
+.description{
+    font-weight: lighter;
+    color:#898989;
+
+}
+
+
+.fn-todo>.fn{
+    width:50%;
+    height:100%;
+    padding:5px;
+    padding-left:20px;
+    display: flex;
+    flex-direction: column;
+
+}
+.todo-goals{
+    width:50%;
+    height:100%;
+    border-right: 1px solid black;
+    padding:5px;
+
+}
+
+.todo-button .MuiSvgIcon-root{
+    color:black;
+}
+
+.todo-entry{
+    margin-top: 5px;
+    border: none !important;
+}
+.todo-button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
+
+.todo-entry{
+    outline:none;
+    border: none;
+}
+
+
+.todo-entries{
+    overflow-y: scroll;
+}
+
+.todo-entries-container{
+    height:140px;
+    overflow-y: scroll;
+}
+
+
+.todo-form{
+    display: flex;
+    align-items: center;
+    border-bottom: solid 1px black;
+
+}

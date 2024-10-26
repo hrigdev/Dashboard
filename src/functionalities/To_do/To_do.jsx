@@ -1,6 +1,7 @@
 // useEffect useState
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import CheckIcon from '@mui/icons-material/Check';
 import List from "./Components/List";
 
 function To_do(props) {
@@ -34,19 +35,21 @@ function To_do(props) {
 
   return (
     <> 
-      <form onSubmit={submitEntry}>
-        <input type="text" onChange={submitValue} value={value}></input>
-        <button>Tick</button>
+      <form onSubmit={submitEntry} className="todo-form">
+        <input placeholder='Enter for quick list'className="todo-entry" type="text" onChange={submitValue} value={value}></input>
+        <button className="todo-button"><CheckIcon /></button>
       </form>
-      <div>
+      <div className="todo-entries-container">
         {entries.map((entry, index) => {
           return (
+            <div className="todo-entries">
             <List
               key={entry.id}
               content_id={entry.id}
               content_value={entry.value}
               Delete={Delete}
             />
+            </div>
           );
         })}
       </div>

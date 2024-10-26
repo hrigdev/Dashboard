@@ -1,17 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import To_do from "./functionalities/To_do/To_do";
 import Notes from "./functionalities/Notes/Notes";
 import Finance from "./functionalities/Finance/Finance";
 import Tracker from "./functionalities/Tracker/Tracker";
+import SettingsIcon from '@mui/icons-material/Settings';
+import InfoIcon from '@mui/icons-material/Info';
 import "./App.css";
 
 function App() {
-  const [active, setActive] = useState(0);
+  const [finalAmount, setFinalAmount] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState("");
+
+  function handleFinalAmountUpdate(amount) {
+    setFinalAmount(amount);
+  }
+
   function getDate() {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const currentDate = new Date().toLocaleDateString("en-US", options);
     return currentDate;
   }
+
+  function calculateTimeRemaining() {
+    const now = new Date();
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999); // Set to the last moment of the current day
+
+    const timeDiff = endOfDay - now; // Difference in milliseconds
+
+    const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+    const seconds = Math.floor((timeDiff / 1000) % 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeRemaining(calculateTimeRemaining());
+    }, 10);
+
+    return () => clearInterval(timer); // Cleanup timer on component unmount
+  }, []);
 
   return (
     <>
@@ -21,26 +50,49 @@ function App() {
           <div className="date">{getDate()}</div>
         </div>
         <div className="goals-container">GOALS</div>
-        <div className="button-container"></div>
+        <div className="button-container">
+          <div>
+            <SettingsIcon />
+          </div>
+          <div>
+            <InfoIcon />
+          </div>
+        </div>
       </div>
       <div className="fn-container">
         <div className="container container1 todo">
           <div className="container-header todo-header">
             <div className="fn-header">TO DO</div>
-            <div className="subheader">TIME REMAINING: XX:XX</div>
+            <div className="subheader">TIME REMAINING: {timeRemaining}</div>
           </div>
-          <To_do />
+          <div className="fn-todo">
+            <div className="todo-goals">
+              <div className="description">
+                Daily Objective
+              </div>
+            </div>
+            <div className="fn">
+              <div className="description">
+                Quick List    
+              </div>
+              <div className="todo-entries" >
+                <To_do />
+              </div>
+            </div>
+          </div>
         </div>
         <div className="container container2 finance">
           <div className="container-header finance-header">
             <div className="fn-header">
-              CURRENT <br />
-              BALANCE <br /> Rs. XXXX
+              CURRENT <br />BALANCE <br /> 
+              <span className="amount">
+                 Rs.{finalAmount}
+              </span>
             </div>
             <div className="subheader">recents:</div>
           </div>
           <div className="fn">
-            <Finance />
+              <Finance onFinalAmountUpdate={handleFinalAmountUpdate} />
           </div>
         </div>
         <div className="container container3 tracker">
