@@ -4,7 +4,7 @@ import Notes_list from "./Components/Notes_list";
 import AddIcon from "@mui/icons-material/Add";
 
 function Notes(props) {
-  const [entries, setEntries] = useState([]);
+  const [note_entries, setNoteEntries] = useState([]); // Changed to note_entries
   const [content, setContent] = useState({
     date: null,
     id: null,
@@ -12,8 +12,21 @@ function Notes(props) {
   });
 
   const [mouseMovement, setMouseMovement] = useState(false);
-
   const [input, setInput] = useState(false);
+  useEffect(() => {
+    const storedEntries = JSON.parse(
+      localStorage.getItem("note_entries") || "[]"
+    );
+    setNoteEntries(storedEntries);
+
+    if (storedEntries.length > 0) {
+      setContent(storedEntries[storedEntries.length - 1]); // Set content to the last entry
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("note_entries", JSON.stringify(note_entries));
+  }, [note_entries]);
 
   function mouseEnter() {
     setMouseMovement(true);
@@ -24,70 +37,70 @@ function Notes(props) {
   }
 
   function searcher(id) {
-    const found = entries.find((entry) => entry.id === id);
+    const found = note_entries.find((entry) => entry.id === id);
     if (found) {
-      console.log("searching...");
-
       setContent(found);
-    } else {
-      console.log("the thing is not found");
     }
   }
 
   function deleteEntry(id) {
-    setEntries((prevValue) => prevValue.filter((value) => value.id != id));
+    setNoteEntries((prevValue) => prevValue.filter((value) => value.id !== id));
   }
 
-  // Function to clear the editor and prepare for a new note
   function createNewEntry() {
     setContent({
       date: null,
       id: null,
       content: "",
     });
-
     setInput(true);
   }
 
   useEffect(() => {
-    console.log("Entries updated:", entries);
-    if (entries.length == 0) {
+    if (note_entries.length === 0) {
       setContent("");
+      props.setSideBarButton(false);
+    } else {
+      props.setSideBarButton(true);
     }
-  }, [entries]);
-
-  useEffect(() => {
-    if (content) {
-      console.log("Content updated:", content);
-    }
-  }, [content]);
+  }, [note_entries]);
 
   return (
     <>
       <div className="notesSection">
-        <div className="notes-listSection">
-          <Notes_list
-            entries={entries}
-            searcher={searcher}
-            deleteEntry={deleteEntry}
-          />
-        </div>
-        {input == true ? (
+        {props.showSidebar && (
+          <div className="notes-listSection">
+            <Notes_list
+              entries={note_entries} // Pass note_entries to Notes_list
+              searcher={searcher}
+              deleteEntry={deleteEntry}
+            />
+          </div>
+        )}
+        {input ? (
           <div className="notes-entrySection">
-            <button className="notes-button" onClick={createNewEntry}>
-              <AddIcon />
-            </button>
             <Notes_input
+              createNewEntry={createNewEntry}
               value={content.content}
-              entries={entries}
+              entries={note_entries} // Pass note_entries to Notes_input
               content={content}
-              setEntries={setEntries}
+              setEntries={setNoteEntries} // Update state with setNoteEntries
               searcher={searcher}
               setContent={setContent}
             />
           </div>
-        ) : entries.length > 0 ? (
-          <div>show the latest entry</div>
+        ) : note_entries.length > 0 ? (
+          <div className="notes-entrySection">
+            <Notes_input
+              createNewEntry={createNewEntry}
+              value={content.content}
+              entries={note_entries} // Pass note_entries to Notes_input
+              content={content}
+              setEntries={setNoteEntries} // Update state with setNoteEntries
+              searcher={searcher}
+              setContent={setContent}
+            />
+          </div>
         ) : (
           <div
             className="note-message"
@@ -97,7 +110,7 @@ function Notes(props) {
             {mouseMovement ? (
               <button className="notes-button add" onClick={createNewEntry}>
                 <div>
-                <AddIcon />
+                  <AddIcon />
                 </div>
               </button>
             ) : (

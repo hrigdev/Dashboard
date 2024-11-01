@@ -6,30 +6,36 @@ import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
 import React, { useEffect } from "react";
 import { EditorContent } from "@tiptap/react";
+import Placeholder from "@tiptap/extension-placeholder";
+import AddIcon from "@mui/icons-material/Add";
+
 const Tiptap = (props) => {
   const editor = useEditor({
-      extensions: [
-          Color.configure({ types: [TextStyle.name, ListItem.name] }),
-          TextStyle.configure({ types: [ListItem.name] }),
-          StarterKit,
-      ],
-      content: props.content,
+    extensions: [
+      Color.configure({ types: [TextStyle.name, ListItem.name] }),
+      TextStyle.configure({ types: [ListItem.name] }),
+      StarterKit,
+      Placeholder.configure({
+        placeholder: "Write something …",
+      }),
+    ],
+    content: props.content,
   });
 
   useEffect(() => {
-      if (editor) {
-          editor.commands.setContent(props.content || "");
-      }
+    if (editor) {
+      editor.commands.setContent(props.content || "");
+    }
   }, [props.content, editor]);
 
   function submit(event) {
-      event.preventDefault();
-      const html = editor.getHTML();
-      props.insert(html);
+    event.preventDefault();
+    const html = editor.getHTML();
+    props.insert(html);
   }
 
   if (!editor) {
-      return null;
+    return null;
   }
 
   return (
@@ -257,14 +263,15 @@ const Tiptap = (props) => {
           >
             Redo
           </button>
+          <button onClick={props.createNewEntry}>
+            <div className="add-button">+</div>
+          </button>
+          <button onClick={submit}>Save</button>
         </div>
       </div>
       <div className="text-editor">
-
-      <EditorContent editor={editor} />
-      <button onClick={submit}>Submit</button>
+        <EditorContent editor={editor} />
       </div>
-
     </>
   );
 };
